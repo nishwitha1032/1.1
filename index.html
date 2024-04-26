@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fashionista Boutique</title>
+<link rel="icon" href="https://example.com/favicon.ico" type="image/x-icon">
+<style>
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #eee; color: #333; margin: 0; padding: 0; }
+  header { background: #fff; padding: 20px 40px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+  h1 { margin: 0; font-size: 24px; color: #333; }
+  .container { display: flex; flex-wrap: wrap; justify-content: center; padding: 20px; }
+  .product { background: #fff; margin: 10px; padding: 15px; width: calc(20% - 20px); box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
+  img { width: 100%; height: auto; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+  .price { font-weight: bold; margin-top: 10px; }
+  button { background: #5f55fe; border: none; color: white; padding: 10px 20px; margin-top: 10px; cursor: pointer; border-radius: 5px; }
+  .cart { position: fixed; top: 20px; right: 20px; background: #fe5f55; color: #fff; padding: 10px 20px; border-radius: 10px; cursor: pointer; }
+  .contact { position: fixed; bottom: 20px; right: 20px; background: #4CAF50; color: #fff; padding: 10px 20px; border-radius: 10px; cursor: pointer; }
+  #search { padding: 10px 20px; width: calc(100% - 40px); margin-top: 10px; border: 1px solid #ccc; border-radius: 5px; }
+  label { display: block; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Fashionista Boutique</h1>
+  <label for="search">Search for fashion items:</label>
+  <input type="text" id="search" aria-label="Search for fashion items">
+</header>
+
+<div class="container" id="products">
+  <!-- Products will be added here by JavaScript -->
+</div>
+
+<div class="cart" onclick="alert('Total: $' + cartTotal.toFixed(2))" aria-live="polite">Cart: $0.00</div>
+<div class="contact" onclick="alert('Contact us at: contact@fashionistaboutique.com')" role="button" aria-pressed="false">Contact Us</div>
+
+<script>
+  const products = [
+    { id: 1, name: "Fashion Jacket", price: 99.99, image: "https://example.com/images/product1.jpg" },
+    { id: 2, name: "Stylish Coat", price: 149.50, image: "https://example.com/images/product2.jpg" },
+    { id: 3, name: "Leather Shoes", price: 89.99, image: "https://example.com/images/product3.jpg" },
+    { id: 4, name: "Elegant Dress", price: 129.99, image: "https://example.com/images/product4.jpg" },
+    { id: 5, name: "Casual Shirt", price: 49.99, image: "https://example.com/images/product5.jpg" },
+    { id: 6, name: "Designer Jeans", price: 109.99, image: "https://example.com/images/product6.jpg" },
+    { id: 7, name: "Running Sneakers", price: 84.99, image: "https://example.com/images/product7.jpg" },
+    { id: 8, name: "Classic Blazer", price: 199.99, image: "https://example.com/images/product8.jpg" },
+    { id: 9, name: "Fashionable Hat", price: 34.99, image: "https://example.com/images/product9.jpg" },
+    { id: 10, name: "Chic Scarf", price: 29.99, image: "https://example.com/images/product10.jpg" }
+  ];
+
+  let cartTotal = 0;
+
+  function addProductToDOM(product) {
+    const container = document.getElementById('products');
+    const productDiv = document.createElement('div');
+    productDiv.className = 'product';
+    productDiv.innerHTML = `<img src="${product.image}" alt="${product.name}">
+                            <h3>${product.name}</h3>
+                            <p class="price">$${product.price}</p>
+                            <button onclick="addToCart(${product.price})">Add to Cart</button>`;
+    container.appendChild(productDiv);
+  }
+
+  function addToCart(price) {
+    cartTotal += price;
+    document.querySelector('.cart').textContent = 'Cart: $' + cartTotal.toFixed(2);
+  }
+
+  products.forEach(product => addProductToDOM(product));
+
+  document.getElementById('search').oninput = function(e) {
+    const searchText = e.target.value.toLowerCase();
+    document.querySelectorAll('.product').forEach(product => {
+      const match = product.querySelector('h3').textContent.toLowerCase().includes(searchText);
+      product.style.display = match ? 'block' : 'none';
+    });
+  };
+</script>
+
+</body>
+</html>
